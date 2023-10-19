@@ -1,6 +1,6 @@
-const express = require("express");
-const app = express();
-app.use(express.json());
+const express = require("express"); //le pido a node js que esté la dependencia express instalada[si no esta instalada va a fallar]. Dependecia: 
+const app = express();              //instancia del modulo express
+app.use(express.json());            //utilizo el metodo use para decirle que voy a trabajar mi instancia de objeto con json
 
 const studentsData = [
     {id: 1, name: "Franco", surname: "Ruggieri", age: 22, avg: 9, regular: true},
@@ -27,7 +27,7 @@ app.get("/api/students/:id",(req,res) => {
     }
     else
     {
-        return res.send(student);
+        return res.status(200).send(student);
     }
 });
 
@@ -65,5 +65,5 @@ app.delete("/api/students/:id",(req,res) =>{
     res.status(200).send(student);
 });
 
-const port = process.env.port || 80;
-app.listen(port,() => console.log(`Listen in ${port} ...`));
+const port = process.env.port || 80;    //puerto del proceso u 80
+app.listen(port,() => console.log(`Listen in ${port} ...`));//` se llaman backtiks

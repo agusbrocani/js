@@ -1,0 +1,324 @@
+Express.JS: 
+	-FRAMEWORK(marco de desarrollo web)  rápido y minimalista para Node.JS.
+	-utilidad: crear APIs RESTful de manera EFICIENTE
+	-Express simplifica la creación de servidores web y la gestión de rutas, solicitudes y respuestas en aplicaciones web.
+
+REST(Representational State Transfer): conjunto de principios y restricciones que se utilizan para diseñar servicios web y APIs
+
+-> La DATA[puede ser cualquier cosa: desde objetos fisico a concepto abstractos] se modela como RECURSO
+	ej: Tienda en línea	-> Recursos: productos, usuarios y pedidos
+-> Operaciones sobre RECURSOS: las OPERACIONES en una API RESTful se realizan a través de métodos HTTP estándar
+	->GET		: solicitar informacion del recurso
+	->POST		: crear un nuevo recurso
+	->PUT		: actualizar un recurso COMPLETO
+	->PATCH		: actualizar un recurso de manera PARCIAL[se actualizan algunos campos]
+	->DELETE	: eliminar un recurso
+	->HEAD		: [SIMILAR A GET]solicitar informacion del recurso como ENCABEZADOS, sin recuperar el cuerpo del recurso. Útil para verificar la existencia o estado de un recurso sin descargar TODO SU CONTENIDO
+	->OPTIONS	: obtener info sobre las opciones de comunicación disponibles para el recurso[como los métodos permitidos o los encabezados admitidos]. ej: saber qué operaciones son compatibles con un recurso
+
+RECURSO: usualmente se refiere a una ENTIDAD ESPECIFICA de mi APLICACIÓN[un usuario, un producto, una publicacion de un blog,etc]
+
+CONSTRUIR UN RECURSO EN Express.JS:
+
+1-Ruta (Endpoint): La ruta es la URL a la que los clientes de la API pueden acceder para interactuar con el recurso. 
+Por ejemplo, una ruta para un recurso de usuarios podría ser "/usuarios". 
+Las rutas se definen en tu aplicación Express utilizando app.get(), app.post(), app.put(), app.delete(), u otros métodos de enrutamiento según las acciones que deseas realizar en el recurso.
+
+2-Controlador: Un controlador es una función que se ejecuta cuando se accede a una ruta específica. 
+El controlador maneja las solicitudes HTTP entrantes, procesa los datos y envía respuestas adecuadas. 
+En Express, los controladores son funciones que se asocian a rutas específicas. 
+Por ejemplo, para la ruta "/usuarios", podrías tener un controlador que maneje la creación, lectura, actualización o eliminación de usuarios.
+
+3-Modelo: El modelo representa la estructura de datos del recurso. 
+En una aplicación con una base de datos, el modelo generalmente se corresponde con una tabla en la base de datos. 
+Los modelos definen cómo se almacenan y recuperan los datos del recurso. 
+Puedes utilizar bibliotecas como Mongoose (para MongoDB) o Sequelize (para bases de datos relacionales) para definir y gestionar modelos.
+
+4-Middleware: Puedes utilizar middleware para realizar tareas intermedias relacionadas con el recurso. 
+Por ejemplo, puedes tener middleware de autenticación que verifica si un usuario tiene permiso para acceder a un recurso. 
+Los middleware se pueden aplicar a nivel de ruta o de aplicación y se ejecutan antes de que lleguen a los controladores.
+
+/*	CONSTRUIR UN RECURSO DE USUARIOS EN express
+const express = require('express');
+const app = express();
+
+// Ruta para obtener todos los usuarios
+app.get('/usuarios', (req, res) => {
+  // Controlador para obtener todos los usuarios
+  // Aquí interactuarías con el modelo y enviarías una respuesta
+});
+
+// Ruta para crear un nuevo usuario
+app.post('/usuarios', (req, res) => {
+  // Controlador para crear un nuevo usuario
+  // Aquí tomarías los datos de la solicitud y los guardarías en la base de datos
+});
+
+// Ruta para obtener un usuario específico
+app.get('/usuarios/:id', (req, res) => {
+  // Controlador para obtener un usuario específico por ID
+  // Aquí tomarías el ID de la solicitud y buscarías el usuario correspondiente en la base de datos
+});
+
+// Y así sucesivamente para otras operaciones como actualizar y eliminar usuarios
+
+*/
+
+Buenas prácticas:
+
+Implementar MVC (Model-View-Controller):
+El patrón MVC separa la aplicación en tres componentes: el modelo (manejo de datos y lógica de negocio), la vista (presentación y representación visual) y el controlador (manejo de solicitudes y rutas). 
+Express no prescribe un patrón específico, pero puedes implementar el patrón MVC en tu aplicación para mantener la separación de preocupaciones.
+
+Usar Middleware: son funciones que se pueden usar para realizar tareas intermedias en las solicitudes HTTP. 
+Puedes usar middleware para la autenticación, autorización, manejo de errores, registro y más. 
+La modularización de middleware ayuda a mantener el código limpio y organizado.
+
+Hacer Inyección de dependencias: La inyección de dependencias es útil para gestionar las dependencias de tus controladores y middleware de manera eficiente. 
+Puedes utilizar bibliotecas como Awilix o Inversify para implementar la inyección de dependencias en Express.js.
+
+Manejo de errores centralizado: Implementa un manejador de errores centralizado para capturar errores en la aplicación y responder de manera coherente. 
+Esto ayuda a evitar que la aplicación se bloquee por completo debido a errores no controlados.
+
+Definiciones:
+Internet						: es una red global de computadoras interconectadas a traves de protocolos. ej: TCP/IP, HTTPs, etc
+WWW(World Wide Web)					: es un sistema de información online que permite el acceso y la visualización de documentos y recursos multimedia a través de Internet.
+	-Hipertexto		: los documentos en la web están enlazados entre sí mediante hipervinculos, esto permite a los usuarios navegar de un documento a otro haciendo click en los enlaces
+	-URLs			: identificador único de recursos en la web[cada URL apunta a un sitio web especifico]
+	-Protocolos		: la comunicación se basa en protocolos estándar como HTTP-> permite la transferencia de documentos y datos entre SERVIDORES y CLIENTES web
+	-Navegadores(Browsers)	: son aplicaciones de software que permiten a los usuarios interactuar con la web, navegar por sitios web y acceder a recursos online. EJ: Google Chrome, Opera,Safari,etc
+	-Servidores web		: son COMPUTADORAS o SISTEMAS que almacenan y entregan DOCUMENTOS WEB y RECURSOS a los CLIENTES[navegadores] que realizan solicitudes
+HTTP(Hypertext Transfer Protocol)			: protocolo que se utiliza para transmitir informacion y datos entre un navegador web y un servidor web
+	-NO CIFRA los datos que se transmiten entre CLIENTE y SERVIDOR, se envia en TEXTO PLANO
+	-Por falta de cifrado, las conexiones HTTP NO SON SEGURAS[pueden ser interceptadas por terceros] y no son adecuadas para la transmisión de información confidencial como contraseñas o información de tarjetas de crédito
+HTTPs(Hypertext Transfer Protocol Secure)		: es una EXTENSIÓN SEGURA de HTTP que UTILIZA CIFRADO para proteger los datos entre CLIENTE y SERVIDOR
+	-Utiliza el protocolo SSL(Secure Sockets Layer) o su sucesor, TLS(Transport Layer Security) para cifrar los datos ANTES de la transmisión y descifrarlos en el destino.
+	-HTTPs proporciona una capa adicional de seguridad y privacidad, hace que las conexiones sean seguras y adecuadas para transmitir datos confidenciales y para garantizar la autenticidad de los sitios web
+API(Application Programming Interface)		: es un conjunto de REGLAS Y PROTOCOLOS que permiten que diferentes componentes de software se comuniquen entre sí.
+API RESTful					: conjunto de reglas y protocolos especial
+	-sigue la arquitectura REST
+	-es un tipo especifico de API WEB, basada en conceptos como RECURSOS, VERBOS HTTP, URIs y REPRESENTACIONES DE DATOS[JSON o XML]
+		URI(Uniform Resource Identifier): es una CADENA DE CARACTERES que se utiliza para IDENTIFICAR DE MANERA ÚNICA un RECURSO en la WEB o en CUALQUIER OTRO CONTEXTO 
+		2 formas más comunes:
+			-URL(Uniform Resource Locator)	: una URL es un tipo de URI	-> la URL IDENTIFICA un RECURSO y PROPORCIONA INFO sobre cómo ACCEDER AL RECURSO. ej: una URL INCLUYE el protocolo a UTILIZAR	-> http o https, nombre del dominio, la RUTA DEL RECURSO al SERVIDOR y en algunos casos INFO ADICIONAL como parámetros de consulta. Ejemplo de URL: https://www.ejemplo.com/pagina.html
+			-URN(Uniform Resource Name)	: una URN es un tipo de URI	-> identifica al RECURSO de manera única pero NO PROPORCIONA INFO sobre cómo acceder a ese recurso. Las URNs se utilizan para identificar recursos sin depender de su ubicación o acceso directo. Ejemplo de URN: urn:isbn:0451450523
+-deben cumplir con la arquitectura cliente-servidor
+ARQUITECTURA CLIENTE-SERVIDOR			: es un modelo de diseño de sistemas de software en el que se dividen las responsabilidades entre dos componentes fundamentales: el cliente y el servidor.
+	-el CLIENTE solicita y consume RECURSOS o SERVICIOS
+	-el SERVIDOR es la parte que proporciona los SERVICIOS o RECURSOS solicitados por el cliente
+	-VENTAJAS: permite la separación de preocupaciones y la escalabilidad.
+END POINT					: URL específica a la que los clientes pueden enviar solicitudes HTTP[para interactuar con una aplicación o acceder a un recurso] . Los endpoints son esenciales para la comunicación entre clientes y servidores en una API.
+	en criollo-> son URL asociadas a métodos HTTP, son la puerta de entrada a mi API[reciben HTTP Request y emiten una response]
+COOKIES						: son pequeños archivos de texto que los SITIOS WEB y las WEB APP almacenan en el dispositivo del USUARIO[pc,celular,tablet,etc] cuando se visita un SITIO WEB.
+	-los archivos de texto contienen info que se utiliza para realizar un seguimiento de la actividad del usuario en linea y proporcionar una experiencia personalizada.
+	USOS COMUNES DE LAS COOKIES:
+		-Almacenamiento de datos: almacenar info especifica sobre preferencias del usuario, informacion de inicio de sesion, carritos de compras en linea, seguimiento de actividad, etc
+		-Mantener sesión de un usuario, recordar las preferencias del usuario, realizar un seguimiento de las visitas a la página web, personalizar contenido y anuncios, proporcionar análisis del uso del sitio
+	Tipos de Cookies:
+		-Cookies de sesión	: almacenan temporalmente en el dispositivo del usuario su sesion y se eliminan cuando se cierra el navegador y se utilizan para mantener la sesion iniciada.
+		-Cookies persistentes	: se almacenan en el dispositivo durante un periodo de tiempo más largo y se utilizan para RECORDAR LAS PREFERENCIAS y DATOS DEL USUARIO a lo largo del tiempo.
+	PELIGRO: problemas para la privacidad del usuario ya que se utilizan para rastrear su actividad. NO PUEDEN EJECUTAR PROGRAMAS ni TRANSMITIR MALWARE y NO ALMACENAN INFORMACIÓN PERSONAL SENSIBLE COMO CONTRASEÑAS
+	Los navegadores permiten a los usuarios CONTROLAR y GESTIONAR las COOKIES. Se puede eliminar cookies, bloquear cookies de terceros y configurar preferencias de cookies en la configuracion del navegador.
+	Ley de Cookies: existen leyes de privacidad y regulaciones que requieren que los sitios web informen a los usuarios sobre su uso de cookies y obtengan el consentimiento de los usuarios antes de utilizar ciertas cookies.
+	Viene de la expresión en inglés "Magic Cookie"(galletas mágicas)
+		Analogía culinaria: la elección de "cookie" se basa en la analogía de que, 
+			al igual que en una receta de cocina, 
+			donde un chef puede dejar una "galleta mágica" en el horno para luego recuperarla 
+			y seguir trabajando en ella, las "cookies" en la informática son pequeños fragmentos 
+			de información que un sitio web almacena en el dispositivo del usuario y luego recupera 
+			y utiliza para una variedad de propósitos.
+TOKEN						: es una cadena de caracteres o un elemento que se utiliza para representar la autorización o autenticación de un usuario o entidad en un sistema o aplicación.
+
+	-Token de Autenticación: Un token de autenticación se utiliza para verificar la identidad de un usuario.
+	Los sistemas de autenticación, como contraseñas, tarjetas inteligentes o biometría, generan tokens que demuestran que un usuario está autorizado para acceder a una cuenta o sistema.
+
+	-Token de Autorización: Un token de autorización se utiliza para determinar qué acciones o recursos tiene permitido realizar un usuario. 
+	Por ejemplo, en un sistema de control de acceso, un token de autorización puede determinar si un empleado tiene permiso para ingresar a un edificio.
+
+	-Token de Sesión: Un token de sesión se crea cuando un usuario inicia sesión en una aplicación o sitio web. 
+	Se utiliza para rastrear la actividad del usuario durante su sesión. Esto puede incluir la información sobre qué acciones realiza el usuario y cómo interactúa con la aplicación.
+
+	-Token de Acceso: En el contexto de servicios web y API, un token de acceso se utiliza para autenticar una solicitud de un cliente (por ejemplo, una aplicación) a un servidor. 
+	El servidor verifica el token de acceso para determinar si el cliente tiene permiso para acceder a ciertos recursos o realizar ciertas operaciones.
+
+	-Token de Identificación: Un token de identificación se utiliza para representar de manera única a un usuario o entidad. 
+	Estos tokens son comunes en sistemas de autenticación de dos factores, como códigos de un solo uso generados por una aplicación móvil.
+
+	-Token de Seguridad de Hardware: En sistemas de seguridad, un token de seguridad de hardware es un dispositivo físico que genera códigos temporales o un valor único que se utiliza para autenticar a un usuario o entidad. 
+	Ejemplos de estos dispositivos son los tokens de autenticación de dos factores o las tarjetas de identificación segura.
+
+Uso Conjunto de TOKENS y COOKIES:
+
+	A menudo, los tokens se almacenan en una cookie en el navegador del usuario. 
+	El token se utiliza para autenticar y autorizar al usuario, y se almacena en una cookie para mantener el estado de la sesión.
+	La cookie que contiene el token se envía automáticamente con cada solicitud al servidor, lo que facilita la verificación de la identidad y la autorización del usuario en cada solicitud.
+
+Cómo funcionan los TOKENS en el modelo CLIENTE-SERVIDOR:
+
+1-Autenticación del Usuario:
+	Cuando un usuario intenta acceder a un recurso protegido en una aplicación web, como una página de inicio de sesión, envía sus credenciales (por ejemplo, nombre de usuario y contraseña) al servidor.
+	El servidor verifica estas credenciales y, si son válidas, genera un token de autenticación que representa la identidad del usuario.
+
+2-Generación del Token:
+	El servidor genera un token de autenticación, que puede ser una cadena de caracteres única, y lo asocia con la identidad del usuario.
+	Este token se utiliza para identificar al usuario de manera única en las solicitudes futuras y demostrar que ha iniciado sesión de manera válida.
+
+3-Envío del Token al Cliente:
+	El servidor envía el token al cliente, generalmente en forma de una cookie o como parte de la respuesta HTTP.
+	El cliente, que suele ser un navegador web, almacena este token de manera segura.
+
+4-Solicitudes Posteriores:
+	Cuando el usuario realiza solicitudes posteriores al servidor (por ejemplo, accede a páginas protegidas o realiza acciones que requieren autenticación), el cliente (navegador) adjunta el token a cada solicitud saliente.
+	El servidor recibe el token en cada solicitud y lo verifica para determinar la identidad del usuario y si tiene autorización para acceder al recurso solicitado.
+
+5-Autorización del Usuario:
+	El servidor también puede utilizar el token para verificar si el usuario tiene permisos para realizar ciertas acciones. Por ejemplo, puede verificar si el usuario tiene permisos para realizar una acción específica, como editar su perfil o eliminar un recurso.
+
+6-Actualización y Expiración del Token:
+	Los tokens suelen tener una fecha de vencimiento o tiempo de vida limitado para aumentar la seguridad. Cuando un token expira, el usuario debe volver a autenticarse para recibir un nuevo token válido.
+
+7-Cierre de Sesión:
+	Para cerrar la sesión del usuario, el servidor puede invalidar el token actual y requerir que el usuario inicie sesión nuevamente para obtener un nuevo token.
+
+8-Seguridad:
+	La seguridad es esencial en todo el proceso. Los tokens deben estar protegidos de forma segura en el lado del cliente y se deben tomar medidas para protegerlos en tránsito entre el cliente y el servidor.
+
+SOCKETS: son una forma de comunicación bidireccional entre procesos o programas que se ejecutan en diferentes dispositivos a través de una red de computadoras.
+	-Los sockets permiten que las aplicaciones se comuniquen mediante el intercambio de datos, ya sea en una red local o a través de Internet.
+
+	-Comunicación en Red: Los sockets se utilizan para la comunicación entre aplicaciones o procesos en diferentes dispositivos conectados en red, como computadoras, servidores y dispositivos móviles.
+
+	-Protocolo de Comunicación: La comunicación a través de sockets generalmente se basa en un protocolo de comunicación específico, como TCP (Protocolo de Control de Transmisión) o UDP (Protocolo de Datagramas de Usuario). Estos protocolos determinan cómo se establece, mantiene y finaliza la conexión y cómo se transmiten los datos.
+
+	-Tipo de Socket: Los sockets pueden ser de diferentes tipos, como sockets de flujo (stream sockets) y sockets de datagrama (datagram sockets). 
+	Los sockets de flujo se utilizan para la comunicación confiable y orientada a la conexión (TCP), mientras que los sockets de datagrama se utilizan para la comunicación no confiable sin conexión (UDP).
+
+	-Conexión Cliente-Servidor: En una comunicación a través de sockets, generalmente hay un proceso servidor que escucha y espera conexiones entrantes, y un proceso cliente que inicia la conexión con el servidor. Una vez que se establece la conexión, ambas partes pueden intercambiar datos.
+
+	-Bidireccionalidad: Los sockets permiten la comunicación bidireccional, lo que significa que tanto el cliente como el servidor pueden enviar y recibir datos en ambas direcciones.
+
+	-API de Sockets: La mayoría de los sistemas operativos proporcionan una API (Interfaz de Programación de Aplicaciones) de sockets que permite a los programadores desarrollar aplicaciones de red. 
+		Ejemplos de API de sockets incluyen las API de sockets de Berkeley (BSD) en sistemas Unix y las API de sockets en Windows.
+
+	-Aplicaciones Comunes: Los sockets se utilizan en una amplia variedad de aplicaciones de red, incluyendo aplicaciones web (para la transferencia de datos entre navegadores y servidores), juegos en línea, aplicaciones de chat, transmisión de datos en tiempo real y más.
+
+En resumen, los sockets son una tecnología fundamental en la programación de red que permite la comunicación entre aplicaciones o procesos en dispositivos diferentes a través de una red. 
+Los programadores utilizan APIs de sockets para implementar la comunicación en sus aplicaciones, lo que les permite intercambiar datos de manera eficiente y confiable a través de una red.
+
+STATUS: condición de la respuesta HTTP para el verbo solicitado	->	res.status(404).send("Mensaje de error asociado al tipo de error");
+
+STATUS CODES:
+1xx (Respuestas informativas):
+
+	100 Continue: Indica que el servidor ha recibido la solicitud inicial y está dispuesto a recibir la parte del cuerpo de la solicitud.
+	101 Switching Protocols: Indica que el servidor está cambiando los protocolos utilizados en la respuesta.
+
+2xx (Respuestas exitosas):
+
+	200 OK: La solicitud se realizó con éxito y se devolvió la respuesta solicitada.
+	201 Created: La solicitud se completó con éxito, y se ha creado un nuevo recurso como resultado.
+	204 No Content: La solicitud se realizó con éxito, pero no se devuelve ningún contenido en la respuesta.[ENCONTRE ALGO PERO ESTABA VACIO]
+
+3xx (Redirecciones):
+
+	301 Moved Permanently: Indica que el recurso solicitado se ha movido de forma permanente a una nueva ubicación.
+	302 Found (o 303 See Other): Indica que el recurso solicitado se ha encontrado, pero podría haber sido movido temporalmente.
+	304 Not Modified: Indica que el recurso no ha cambiado desde la última solicitud y se puede utilizar la caché local.
+
+4xx (Errores del cliente):
+
+	400 Bad Request: Indica que la solicitud del cliente es incorrecta o está mal formada.
+	401 Unauthorized: Indica que el cliente debe autenticarse para acceder al recurso solicitado.
+	403 Forbidden: El cliente no tiene permiso para acceder al recurso.
+	404 Not Found: Indica que el recurso solicitado no se encontró en el servidor.	[NO ENCONTRÉ NADA PORQUE ESO NO EXISTIA]
+
+5xx (Errores del servidor):
+
+	500 Internal Server Error: Indica que se produjo un error en el servidor y no se pudo completar la solicitud.
+	502 Bad Gateway: Indica que el servidor, actuando como intermediario, recibió una respuesta no válida del servidor al que se hizo una solicitud.
+	503 Service Unavailable: Indica que el servidor no está disponible temporalmente para manejar la solicitud.
+	504 Gateway Timeout: Indica que el servidor, actuando como intermediario, no pudo recibir una respuesta del servidor al que se hizo una solicitud en un tiempo razonable.
+
+Faltan conceptos: 
+-ORM(Object-Relational Mapping) [Mapeo Objeto-Relacional]:
+	para Node.js la biblioteca Sequelize simplifican la interacción con la BBDD
+-WebSockets
+-Patrones de Diseño		-> singleton
+
+/*
+class Singleton {
+  constructor() {
+    if (Singleton.instance) {
+      return Singleton.instance;
+    }
+    this.data = "Singleton Instance";
+    Singleton.instance = this;
+  }
+
+  getData() {
+    return this.data;
+  }
+}
+
+const instance1 = new Singleton();
+console.log(instance1.getData()); // "Singleton Instance"
+
+const instance2 = new Singleton();
+console.log(instance2.getData()); // "Singleton Instance"
+
+console.log(instance1 === instance2); // true
+
+
+*/
+-Patrones de arquitectura	-> MVC
+				-> CLIENTE-SERVIDOR
+Contenedores y Orquestación: en simples palabras, antes habia problemas en donde habia que actualizar las versiones de las tecnologias manualmente y podia haber diferencias entre desarrollo y producción
+	-Docker				: herramienta que permite EMPAQUETAR, DISTRIBUIR y EJECUTAR APLICACIONES CONTENEDORES.
+		CONTENEDOR:es una unidad ligera y autónoma que incluye todo lo necesario para que una aplicación se ejecute, como el código, las bibliotecas, las dependencias y las configuraciones. 
+	-Kubernetes			: permite comunicación en una RED DE CONTENEDORES. Sirve para implementar, administrar y escalabilizar aplicaciones en contenedores en entornos de producción.
+
+Docker se enfoca en la creación y ejecución de contenedores, mientras que Kubernetes se centra en la orquestación y administración de aplicaciones en contenedores en entornos de producción. 
+En muchos casos, se utilizan juntos, donde Docker se utiliza para crear las imágenes de contenedor y Kubernetes se utiliza para administrar y escalar esas aplicaciones en entornos de producción. 
+Esta combinación proporciona una solución completa desde el desarrollo hasta la implementación en producción.
+
+Seguridad de Red
+
+PASOS IMPORTANTES PARA API RESTful:
+//Paso 0 instalar node js
+//npm init
+//package name: nodejsapi
+//version       -> ENTER
+//description   -> ENTER
+//entry point   -> ENTER [index.js por defecto]
+//test command  -> ENTER
+//git repository-> ENTER
+//keywords      -> ENTER
+//author        -> ENTER
+//license       -> ENTER
+//Is this OK?   -> ENTER
+
+//npm install express   -> agrega los package necesarios
+//FIN DE LAS CONFIGURACIONES
+----------------
+//npm install express
+/*
+const express = require("express");
+const app = express();
+app.use(express.json());
+*/
+//data a manejar
+//verbos http
+//pongo el puerto a la escucha
+// const port = process.env.port || 80;
+// app.listen(port,() => console.log(`Listen in ${port} ...`));
+//Ejecuto node index.js en consola
+//Pruebo usando Postman
+-----------------------------
+autenticación, actualización[JSON WebToken]
+//HOT RELOAD	-> RECARGA CALIENTE	-> VOS HACES CAMBIOS EN EL CODIGO Y AUTOMATICAMENTE SE VE REFLEJADO[sin resetear la app entera, va reseteando por modulos automaticamente o puedo pedirselo], EN CAMBIO EN EXPRESS JS DEBO RESETEAR CON node index.js
+
+Middleware:	hay middlewares del framework o puedo generar los mios	-> funcion intermedia entre la request y el endpoint
+ej-> autenticación de usuario, antes de llegar al endpoint, rechazo la request
+
+INYECCIÓN DE DEPENDENCIAS: cuando tengo una variable sin declarar y la inicializo con una conexion[no necesariamente de la bbdd]
+VARIABLE DE ENTORNO: VARIABLES DE CONFIGURACIÓN
